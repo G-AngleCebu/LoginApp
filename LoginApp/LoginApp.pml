@@ -6,12 +6,14 @@
     </BehaviorDescriptions>
     <Dialogs>
         <Dialog name="HelloWorld" src="HelloWorld/HelloWorld.dlg" />
+        <Dialog name="test" src="test/test.dlg" />
     </Dialogs>
     <Resources>
         <File name="" src=".DS_Store" />
     </Resources>
     <Topics>
         <Topic name="HelloWorld_enu" src="HelloWorld/HelloWorld_enu.top" topicName="HelloWorld" language="en_US" />
+        <Topic name="test_enu" src="test/test_enu.top" topicName="test" language="en_US" />
     </Topics>
     <IgnoredPaths />
 </Package>

@@ -100,8 +100,90 @@
                             <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
                             <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" />
                         </Box>
-                        <Box name="test" id="3" localization="8" tooltip="" x="397" y="38">
+                        <Box name="clockInOut" id="3" localization="8" tooltip="" x="710" y="103">
                             <bitmap>media/images/box/box-python-script.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+import time
+
+loginPage = "http://www.opentimeclock.com/free.html"
+
+browser = webdriver.PhantomJS()
+browser.set_window_size(11250, 550)
+browser.get(loginPage)
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self)
+
+        self.tts = ALProxy('ALTextToSpeech')
+
+    def onLoad(self):
+        #put initialization code here
+        pass
+
+    def onUnload(self):
+        #put clean-up code here
+        pass
+
+    def onInput_onStart(self):
+        uname = self.getParameter("USERNAME")
+        pword = self.getParameter("PASSWORD")
+
+        self.login(uname, pword)
+        self.attendance()
+
+    def onInput_onStop(self):
+        self.onUnload() #it is recommended to reuse the clean-up as the box is stopped
+        self.onStopped() #activate the output of the box
+
+
+    def login(self, uname, pword):
+
+        username1 = browser.find_element_by_id('txtUser')
+        username1.send_keys(str(uname))
+
+        password1 = browser.find_element_by_id('txtPassword')
+        password1.send_keys(str(pword))
+
+        time.sleep(2)
+
+    def attendance(self):
+        clockInOut = browser.find_element_by_id('btnClock')
+        if clockInOut.text == "CLOCK IN":
+        		clockInOut.click()
+        		try:
+            		WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.ID, 'dialogBody')))
+                print ("Username or password not matching.")
+                browser.find_element_by_id('dialogOK').click()
+            except:
+                timeIn = browser.find_element_by_id('lblCurrentTime').text
+                print ("Time logged in: " + str(timeIn))
+
+        elif clockInOut.text == "CLOCK OUT":
+            clockInOut.click()
+            try:
+                WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.ID, 'dialogBody')))
+                print ("Username or password not matching.")
+                browser.find_element_by_id('dialogOK').click()
+            except:
+                timeIn = browser.find_element_by_id('lblCurrentTime').text
+                print ("Time logged out: " + str(timeIn))]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+                            <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
+                            <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" />
+                            <Parameter name="USERNAME" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="5" />
+                            <Parameter name="PASSWORD" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="6" />
+                        </Box>
+                        <Box name="test" id="4" localization="8" tooltip="" x="279" y="180">
+                            <dialogFile>../test/test.dlg</dialogFile>
+                            <bitmap>media/images/box/box-dialog.png</bitmap>
                             <script language="4">
                                 <content>
                                     <![CDATA[]]>
@@ -114,7 +196,7 @@
                         </Box>
                         <Link inputowner="2" indexofinput="2" outputowner="0" indexofoutput="2" />
                         <Link inputowner="1" indexofinput="2" outputowner="2" indexofoutput="3" />
-                        <Link inputowner="3" indexofinput="2" outputowner="1" indexofoutput="4" />
+                        <Link inputowner="4" indexofinput="2" outputowner="2" indexofoutput="3" />
                     </Diagram>
                 </BehaviorKeyframe>
             </BehaviorLayer>
