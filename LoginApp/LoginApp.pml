@@ -7,8 +7,11 @@
     <Dialogs>
         <Dialog name="HelloWorld" src="HelloWorld/HelloWorld.dlg" />
     </Dialogs>
-    <Resources />
+    <Resources>
+        <File name="" src=".DS_Store" />
+    </Resources>
     <Topics>
         <Topic name="HelloWorld_enu" src="HelloWorld/HelloWorld_enu.top" topicName="HelloWorld" language="en_US" />
     </Topics>
+    <IgnoredPaths />
 </Package>
