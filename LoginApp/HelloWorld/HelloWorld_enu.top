@@ -1,0 +1,5 @@
+topic: ~HelloWorld()
+language: enu
+
+u:(_*):$1 $message=$1
+$onStopped=1
