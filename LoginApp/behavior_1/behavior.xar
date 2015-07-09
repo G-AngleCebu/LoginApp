@@ -211,7 +211,7 @@ filePathInProject = "chromedriver"
 for dirName, subdirList, fileList in os.walk(os.path.expanduser("~")):
     if projectName in subdirList:
         chromedriver = str(dirName)+"/"+str(projectName)+"/"+str(filePathInProject)
-        break;
+
 browser = webdriver.Chrome(chromedriver)
 '''browser = webdriver.PhantomJS()
 browser.set_window_size(11250, 550)'''

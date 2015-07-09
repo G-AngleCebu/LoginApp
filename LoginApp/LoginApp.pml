@@ -9,11 +9,11 @@
         <Dialog name="test" src="test/test.dlg" />
     </Dialogs>
     <Resources>
-        <File name="" src=".DS_Store" />
+        <File name="chromedriver" src="chromedriver" />
     </Resources>
     <Topics>
         <Topic name="HelloWorld_enu" src="HelloWorld/HelloWorld_enu.top" topicName="HelloWorld" language="en_US" />
-        <Topic name="test_enu" src="test/test_enu.top" topicName="test" language="en_US" />
+        <Topic name="test_enu" src="test/test_enu.top" topicName="test" language="enu" />
     </Topics>
     <IgnoredPaths />
 </Package>
