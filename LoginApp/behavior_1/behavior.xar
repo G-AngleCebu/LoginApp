@@ -87,7 +87,7 @@
                             </Parameter>
                             <Resource name="Speech" type="Lock" timeout="0" />
                         </Box>
-                        <Box name="Identify User" id="1" localization="8" tooltip="" x="253" y="0">
+                        <Box name="Identify User" id="1" localization="8" tooltip="" x="337" y="20">
                             <dialogFile>../HelloWorld/HelloWorld.dlg</dialogFile>
                             <bitmap>media/images/box/box-dialog.png</bitmap>
                             <script language="4">
@@ -101,7 +101,7 @@
                             <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" />
                             <Output name="usr_id" type="3" type_size="1" nature="2" inner="0" tooltip="" id="5" />
                         </Box>
-                        <Box name="Verify Identity" id="3" localization="8" tooltip="" x="264" y="152">
+                        <Box name="Verify Identity" id="3" localization="8" tooltip="" x="348" y="172">
                             <bitmap>media/images/box/box-python-script.png</bitmap>
                             <script language="4">
                                 <content>
@@ -163,7 +163,7 @@ class MyClass(GeneratedClass):
                 self.status = "log you out"
                 logInStatus = 0
 
-            logInOutQuery = ("UPDATE pepper_test SET flag = "+str(logInStatus)+" WHERE id = "+str(id))
+            logInOutQuery = ("UPDATE "+FROM.replace("FROM ","").replace(" ","")+" SET flag = "+str(logInStatus)+" WHERE id = "+str(id))
             cursor.execute(logInOutQuery)
             self.tts.say(str(f_name)+", I will "+self.status)
 
@@ -194,7 +194,7 @@ class MyClass(GeneratedClass):
                             <Parameter name="Table" inherits_from_parent="0" content_type="3" value="FROM pepper_test" default_value="FROM pepper_test" custom_choice="0" tooltip="" id="13" />
                             <Parameter name="usr_id" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="14" />
                         </Box>
-                        <Box name="clockInOut" id="4" localization="8" tooltip="" x="645" y="154">
+                        <Box name="clockInOut" id="4" localization="8" tooltip="" x="520" y="175">
                             <bitmap>media/images/box/box-python-script.png</bitmap>
                             <script language="4">
                                 <content>
