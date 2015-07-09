@@ -4,3 +4,4 @@ env
 # !*/lib/myscript.py
 # for a folder /mypackage
 # !*/lib/mypackage/
+.DS_Store
