@@ -9,6 +9,7 @@
         <Dialog name="test" src="test/test.dlg" />
     </Dialogs>
     <Resources>
+        <File name="" src=".metadata" />
         <File name="" src=".DS_Store" />
     </Resources>
     <Topics>
