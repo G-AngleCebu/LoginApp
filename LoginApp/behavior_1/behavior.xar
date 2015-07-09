@@ -14,8 +14,8 @@
         <Timeline enable="0">
             <BehaviorLayer name="behavior_layer1">
                 <BehaviorKeyframe name="keyframe1" index="1">
-                    <Diagram scale="84.0896">
-                        <Box name="Set Language" id="2" localization="8" tooltip="Select the language you would like the robot to speak and understand. Any following call to&#x0A;ALSpeechRecognition (Speech Reco. box for instance) or ALTextToSpeech (Say box&#x0A;for instance) will use this language." x="100" y="48">
+                    <Diagram scale="70.7107">
+                        <Box name="Set Language" id="2" localization="8" tooltip="Select the language you would like the robot to speak and understand. Any following call to&#x0A;ALSpeechRecognition (Speech Reco. box for instance) or ALTextToSpeech (Say box&#x0A;for instance) will use this language." x="50" y="0">
                             <bitmap>media/images/box/interaction/say.png</bitmap>
                             <script language="4">
                                 <content>
@@ -87,7 +87,7 @@
                             </Parameter>
                             <Resource name="Speech" type="Lock" timeout="0" />
                         </Box>
-                        <Box name="Identify User" id="1" localization="8" tooltip="" x="235" y="47">
+                        <Box name="Identify User" id="1" localization="8" tooltip="" x="253" y="0">
                             <dialogFile>../HelloWorld/HelloWorld.dlg</dialogFile>
                             <bitmap>media/images/box/box-dialog.png</bitmap>
                             <script language="4">
@@ -101,7 +101,7 @@
                             <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" />
                             <Output name="usr_id" type="3" type_size="1" nature="2" inner="0" tooltip="" id="5" />
                         </Box>
-                        <Box name="Verify Identity" id="3" localization="8" tooltip="" x="370" y="50">
+                        <Box name="Verify Identity" id="3" localization="8" tooltip="" x="264" y="152">
                             <bitmap>media/images/box/box-python-script.png</bitmap>
                             <script language="4">
                                 <content>
@@ -110,9 +110,7 @@ import os
 import sys
 from mysql.connector import (connection)
 from mysql.connector import errorcode
-import datetime
-
-#Welcom to the git world geraldine
+import time
 
 class MyClass(GeneratedClass):
     def __init__(self):
@@ -121,8 +119,7 @@ class MyClass(GeneratedClass):
 
     def onInput_onStart(self):
         try:
-            self.read_database()
-            self.onStopped()
+            self.passUserInfo()
         except:
             self.tts.say("You don't seem to be an Employee here.")
             self.onError()
@@ -150,7 +147,6 @@ class MyClass(GeneratedClass):
             query = (SELECT+" "+FROM+" "+WHERE)
             cursor.execute(query)
 
-
             if '*' in SELECT or ('id' in SELECT and 'f_name' in SELECT and 'm_name' in SELECT and 'l_name' in SELECT and 'password' in SELECT and 'flag' in SELECT):
                 for (id,f_name,m_name,l_name,password,flag) in cursor:
                     pass
@@ -158,33 +154,51 @@ class MyClass(GeneratedClass):
             self.userFullName = f_name+" "+m_name+" "+l_name
             self.userPassword = password
 
-            if self.userFullName and self.userPassword:
-                self.status = "log you in" if flag is 1 else "log you out"
-                self.tts.say(str(f_name)+", I will "+self.status)
+            logInStatus = flag
+
+            if flag is 0:
+                self.status = "log you in"
+                logInStatus = 1
+            else:
+                self.status = "log you out"
+                logInStatus = 0
+
+            logInOutQuery = ("UPDATE pepper_test SET flag = "+str(logInStatus)+" WHERE id = "+str(id))
+            cursor.execute(logInOutQuery)
+            self.tts.say(str(f_name)+", I will "+self.status)
 
             cursor.close()
-            cnx.close()]]>
+            cnx.close()
+
+    def passUserInfo(self):
+        ''' get employee's database information'''
+        self.read_database()
+        self.passName(str(self.userFullName))
+        self.passPassword(str(self.userPassword))
+        time.sleep(1)
+        self.onStopped()]]>
 </content>
                             </script>
                             <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
                             <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
                             <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
-                            <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" />
+                            <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="" id="4" />
                             <Output name="onError" type="1" type_size="1" nature="2" inner="0" tooltip="" id="5" />
-                            <Parameter name="User" inherits_from_parent="0" content_type="3" value="temp" default_value="temp" custom_choice="0" tooltip="" id="6" />
-                            <Parameter name="Password" inherits_from_parent="0" content_type="3" value="g67r0tw3qb" default_value="g67r0tw3qb" custom_choice="0" password="1" tooltip="" id="7" />
-                            <Parameter name="Host" inherits_from_parent="0" content_type="3" value="153.121.39.201" default_value="153.121.39.201" custom_choice="0" tooltip="" id="8" />
-                            <Parameter name="Database" inherits_from_parent="0" content_type="3" value="pepperdb" default_value="pepperdb" custom_choice="0" tooltip="" id="9" />
-                            <Parameter name="Select" inherits_from_parent="0" content_type="3" value="SELECT *" default_value="SELECT *" custom_choice="0" tooltip="" id="10" />
-                            <Parameter name="Table" inherits_from_parent="0" content_type="3" value="FROM pepper_test" default_value="FROM pepper_test" custom_choice="0" tooltip="" id="11" />
-                            <Parameter name="usr_id" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="12" />
+                            <Output name="passName" type="3" type_size="1" nature="2" inner="0" tooltip="" id="6" />
+                            <Output name="passPassword" type="3" type_size="1" nature="2" inner="0" tooltip="" id="7" />
+                            <Parameter name="User" inherits_from_parent="0" content_type="3" value="temp" default_value="temp" custom_choice="0" tooltip="" id="8" />
+                            <Parameter name="Password" inherits_from_parent="0" content_type="3" value="g67r0tw3qb" default_value="g67r0tw3qb" custom_choice="0" password="1" tooltip="" id="9" />
+                            <Parameter name="Host" inherits_from_parent="0" content_type="3" value="153.121.39.201" default_value="153.121.39.201" custom_choice="0" tooltip="" id="10" />
+                            <Parameter name="Database" inherits_from_parent="0" content_type="3" value="pepperdb" default_value="pepperdb" custom_choice="0" tooltip="" id="11" />
+                            <Parameter name="Select" inherits_from_parent="0" content_type="3" value="SELECT *" default_value="SELECT *" custom_choice="0" tooltip="" id="12" />
+                            <Parameter name="Table" inherits_from_parent="0" content_type="3" value="FROM pepper_test" default_value="FROM pepper_test" custom_choice="0" tooltip="" id="13" />
+                            <Parameter name="usr_id" inherits_from_parent="0" content_type="3" value="" default_value="" custom_choice="0" tooltip="" id="14" />
                         </Box>
                         <Link inputowner="2" indexofinput="2" outputowner="0" indexofoutput="2" />
                         <Link inputowner="1" indexofinput="2" outputowner="2" indexofoutput="3" />
                         <Link inputowner="3" indexofinput="2" outputowner="1" indexofoutput="4" />
-                        <Link inputowner="3" indexofinput="12" outputowner="1" indexofoutput="5" />
+                        <Link inputowner="3" indexofinput="14" outputowner="1" indexofoutput="5" />
                         <Link inputowner="1" indexofinput="2" outputowner="3" indexofoutput="5" />
-                        <Link inputowner="0" indexofinput="4" outputowner="3" indexofoutput="4" />
                     </Diagram>
                 </BehaviorKeyframe>
             </BehaviorLayer>
