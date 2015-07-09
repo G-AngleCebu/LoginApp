@@ -10,7 +10,6 @@
     </Dialogs>
     <Resources>
         <File name="" src=".metadata" />
-        <File name="" src=".DS_Store" />
     </Resources>
     <Topics>
         <Topic name="HelloWorld_enu" src="HelloWorld/HelloWorld_enu.top" topicName="HelloWorld" language="en_US" />
